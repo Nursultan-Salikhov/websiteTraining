@@ -2,8 +2,8 @@ package main
 
 import (
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"log"
 	todo "websiteTraining"
 	"websiteTraining/pkg/handler"
 	"websiteTraining/pkg/repository"
@@ -13,8 +13,10 @@ import (
 func init() {
 	err := initConfig()
 	if err != nil {
-		log.Fatalf("Error initConfig: %s", err.Error())
+		logrus.Fatalf("Error initConfig: %s", err.Error())
 	}
+
+	logrus.SetFormatter(new(logrus.JSONFormatter))
 }
 
 func main() {
@@ -28,7 +30,7 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalf("Failed to init db: %s", err.Error())
+		logrus.Fatalf("Failed to init db: %s", err.Error())
 	}
 	rep := repository.NewRepository(db)
 	services := service.NewService(rep)
@@ -36,7 +38,7 @@ func main() {
 
 	srv := new(todo.Server)
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
-		log.Fatalf("Error occured while running http server: %s", err.Error())
+		logrus.Fatalf("Error occured while running http server: %s", err.Error())
 	}
 }
 
