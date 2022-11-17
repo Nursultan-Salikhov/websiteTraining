@@ -3,7 +3,6 @@ package repository
 import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
 	"strings"
 	todo "websiteTraining"
 )
@@ -93,9 +92,6 @@ func (r *TodoListPostgres) Update(userId, listId int, input todo.UpdateListInput
 		todoListTable, setQuery, usersListsTable, argId, argId+1)
 
 	args = append(args, listId, userId)
-
-	logrus.Debugf("updateQuery = %s", query)
-	logrus.Debugf("args = %s", args)
 
 	_, err := r.db.Exec(query, args...)
 

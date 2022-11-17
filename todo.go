@@ -8,6 +8,11 @@ type TodoList struct {
 	Description string `json:"description" db:"description"`
 }
 
+type UpdateListInput struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+}
+
 type UserList struct {
 	Id     int
 	UserId int
@@ -15,10 +20,16 @@ type UserList struct {
 }
 
 type TodoItem struct {
-	Id          int    `json:"id"`
-	Tittle      string `json:"tittle"`
-	Description string `json:"description"`
-	Done        bool   `json:"done"`
+	Id          int    `json:"id" db:"id"`
+	Title       string `json:"title" db:"title" binding:"required"`
+	Description string `json:"description" db:"description"`
+	Done        bool   `json:"done" db:"done"`
+}
+
+type UpdateItemInput struct {
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+	Done        *bool   `json:"done"`
 }
 
 type ListsItem struct {
@@ -27,14 +38,16 @@ type ListsItem struct {
 	ItemId int
 }
 
-type UpdateListInput struct {
-	Title       *string `json:"title"`
-	Description *string `json:"description"`
-}
-
 func (i UpdateListInput) Validate() error {
 	if i.Title == nil && i.Description == nil {
 		return errors.New("Update struct don't have values")
+	}
+	return nil
+}
+
+func (i UpdateItemInput) Validate() error {
+	if i.Title == nil && i.Description == nil && i.Done == nil {
+		return errors.New("Update Item struct don't have values")
 	}
 	return nil
 }

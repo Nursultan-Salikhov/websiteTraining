@@ -19,7 +19,7 @@ const (
 	todoListTable   = "todo_lists"
 	usersListsTable = "users_lists"
 	todoItemsTable  = "todo_items"
-	listsItemsTable = "lists_items"
+	listsItemsTable = "lists_item"
 )
 
 func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
